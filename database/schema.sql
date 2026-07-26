@@ -1,5 +1,6 @@
 -- Groundwater Monitoring WebGIS
 -- Initial PostgreSQL/PostGIS database schema
+CREATE EXTENSION IF NOT EXISTS postgis;
 
 CREATE TABLE aquifers (
     aquifer_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -42,6 +43,7 @@ CREATE TABLE monitoring_wells (
     owner VARCHAR(150),
     operating_organization VARCHAR(150),
     purpose VARCHAR(100),
+    geometry GEOMETRY(Point, 4326),
 
     CONSTRAINT fk_monitoring_wells_aquifer
         FOREIGN KEY (aquifer_id)
