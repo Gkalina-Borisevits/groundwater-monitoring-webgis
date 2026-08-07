@@ -1,6 +1,7 @@
 # Groundwater Monitoring WebGIS
 
-A GIS project for groundwater monitoring and water quality visualization.
+A professional WebGIS application for groundwater monitoring, spatial data management and environmental analysis.
+The project demonstrates a complete GIS workflow using PostgreSQL, PostGIS, QGIS and modern web technologies.
 
 ## Technologies
 
@@ -8,6 +9,22 @@ A GIS project for groundwater monitoring and water quality visualization.
 - PostgreSQL
 - PostGIS
 - Python
-- Flask
+- FastAPI
 - Leaflet
 - JavaScript
+
+## Current Progress
+
+### Sprint 1
+
+- PostgreSQL installation
+- PostGIS configuration
+- Initial database schema
+
+### Sprint 2
+
+- QGIS integration
+- Monitoring well visualization
+- Categorized symbology
+- Labels
+- OpenStreetMap basemap
