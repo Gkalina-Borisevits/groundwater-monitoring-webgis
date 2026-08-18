@@ -15,6 +15,7 @@
 -- Query 07 - Minimum and maximum well depth
 -- Query 08 - Count wells by status
 -- Query 09 - Active wells using CTE
+-- Query 10 - Latest groundwater level measurement per well
 -- ===============================================================
 
 
@@ -122,4 +123,57 @@ SELECT
    total_depth_m
 FROM active_wells
 WHERE total_depth_m > 30
-ORDER BY total_depth_m DESC;   
+ORDER BY total_depth_m DESC;  
+
+-- =======================================================================
+-- Query 10
+-- Latest groundwater level measurement per well
+-- Purpose: Return the most recent groundwater level measurement 
+-- for each monitoring well 
+
+WITH ranked_measurements AS (
+   SELECT 
+      w.well_name,
+      m.measurement_datetime,
+      m.depth_to_water_m,
+      m.water_level_elevation_m,
+      ROW_NUMBER() OVER (
+         PARTITION BY m.well_id
+         ORDER BY m.measurement_datetime DESC  
+      ) AS measurement_rank
+   FROM groundwater_level_measurements m
+   JOIN monitoring_wells w
+      ON m.well_id = w.well_id
+)
+SELECT
+   well_name,
+   measurement_datetime,
+   depth_to_water_m,
+   water_level_elevation_m
+FROM ranked_measurements
+WHERE measurement_rank = 1
+ORDER BY well_name;
+
+-- =======================================================================
+-- Query 11
+-- Groundwater level statistic per monitoring well
+-- Purpose: Calculate summary statistics for groundwater level
+-- measurements for each monitoring well
+
+SELECT 
+   w.well_name,
+   COUNT(*) AS measurement_count,
+   MIN(m.depth_to_water_m) AS min_depth_m,
+   MAX(m.depth_to_water_m) AS max_depth_m,
+   ROUND (
+      AVG(m.depth_to_water_m),
+      2
+   ) AS avg_depth_m
+FROM groundwater_level_measurements m 
+JOIN monitoring_wells w
+   ON m.well_id = w.well_id
+GROUP BY
+   w.well_id,
+   w.well_name
+ORDER BY
+   w.well_name;      
