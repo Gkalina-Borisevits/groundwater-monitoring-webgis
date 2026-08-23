@@ -98,7 +98,9 @@ SELECT
             THEN 'fall only'
 
         ELSE 'no change data'
-    END AS movement_summary
+    END AS movement_summary,
+
+    w.geometry
 
 FROM monitoring_wells w
 
